@@ -31,7 +31,7 @@ public class SwitchTileService extends TileService {
     Tile tile = getQsTile();
     @Override
     public void onClick(){
-        Toast.makeText(getApplicationContext(),"Hello World",Toast.LENGTH_SHORT).show();
+        Toast.makeText(getApplicationContext(),"Hello World - New",Toast.LENGTH_SHORT).show();
 
         //MainActivity.checkState(sharedPreferences.getString("ip",""));
 
