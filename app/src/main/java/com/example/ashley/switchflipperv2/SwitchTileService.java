@@ -31,21 +31,59 @@ public class SwitchTileService extends TileService {
     Tile tile = getQsTile();
     @Override
     public void onClick(){
-        Toast.makeText(getApplicationContext(),"Hello World - New",Toast.LENGTH_SHORT).show();
+//        Toast.makeText(getApplicationContext(),"Hello World - New",Toast.LENGTH_SHORT).show();
+        // Instantiate the RequestQueue.
+        queue = Volley.newRequestQueue(getApplicationContext());
+        String url = "http://" + ip + "/arduino/flip/" + pin;
 
-        //MainActivity.checkState(sharedPreferences.getString("ip",""));
+        // Request a string response from the provided URL.
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        // Display the first 500 characters of the response string.
+                        //mTextView.setText("Response is: "+ response.substring(0,500));
+                        Toast.makeText(getApplicationContext(),"Success!", Toast.LENGTH_SHORT).show();
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                String strerror = error.toString().trim();
+                if(strerror.equals("com.android.volley.AuthFailureError")){
+                    Toast.makeText(getApplicationContext(),"Wrong Credentials", Toast.LENGTH_SHORT).show();
+                }else {
+                    Toast.makeText(getApplicationContext(), error.toString(), Toast.LENGTH_SHORT).show();
+                }
+            }
+        })
 
-        /*
-        if(tile.getState()==2){
-            callApi(ip,pin,"0");
-        }else if(tile.getState()==0){
-            callApi(ip,pin,"1");
-        }
-        */
+        {
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> params = new HashMap<String, String>();
+                String username = "root";
+                // String username = sharedPreferences.getString("username","");
+                // String password = sharedPreferences.getString("password","");
+                String password = "arduino1";
+                String login = username + ":" + password;
+                //String b64 = java.util.Base64.getEncoder().encodeToString(login.getBytes()); //API Level too Low
+                byte[] data;
+                String base64 = "";
+                try {
+                    data = login.getBytes("UTF-8");
+                    base64 = Base64.encodeToString(data, Base64.DEFAULT);
+                } catch (UnsupportedEncodingException e) {
+                    e.printStackTrace();
+                }
 
-       // Toast.makeText(getApplicationContext(),"test",Toast.LENGTH_SHORT).show();
+                //params.put("Authorization", "Basic cm9vdDphcmR1aW5v");
+                params.put("Authorization", "Basic " + base64);
+                return params;
+            }
+        };
 
-        //callApi(sharedPreferences.getString("ip",""),"12","1");
+        // Add the request to the RequestQueue.
+        queue.add(stringRequest);
 
     }
 
