@@ -42,6 +42,8 @@ public class MainActivity extends AppCompatActivity {
 
     String[] stateSwitch;
 
+    boolean verbose = true;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -109,7 +111,9 @@ public class MainActivity extends AppCompatActivity {
                     public void onResponse(String response) {
                         // Display the first 500 characters of the response string.
                         //mTextView.setText("Response is: "+ response.substring(0,500));
-                        Toast.makeText(getApplicationContext(),"Good!", Toast.LENGTH_SHORT).show();
+                        if (verbose == true){
+                            Toast.makeText(getApplicationContext(), "Good!", Toast.LENGTH_SHORT).show();
+                        }
                         setStateSwitch(response);
                     }
                 }, new Response.ErrorListener() {
