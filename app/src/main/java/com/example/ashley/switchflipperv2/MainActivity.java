@@ -42,6 +42,7 @@ public class MainActivity extends AppCompatActivity {
 
     String[] stateSwitch;
 
+    //added new variable
     boolean verbose = true;
 
     @Override
